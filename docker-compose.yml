@@ -1,0 +1,34 @@
+version: "3"
+
+services: 
+  # this is the service name, remember there can be multiple per compose file
+  # do apply commands from outside to this service, do docker-compose exec backend bash 
+  backend: 
+    
+    # build is the location of this service's Dockerfile, relative to the 
+    # docker-compose file 
+    build: ./node-practice
+    
+    # remember, this docker environment's working dir is /usr/src/node-practice
+    # nodemon auto restarts the server when changes are detected
+    command: nodemon src/index.js
+
+    # these are the links from your local machine:docker files 
+    # so that you can access them without restarting docker
+    volumes: 
+      # - ./migrations:/usr/src/app/migrations
+      # - ./seeds:/usr/src/app/seeds
+      - ./node-practice/src:/usr/src/node-practice/src
+      - ./node-practice/package.json:/usr/src/node-practice/package.json
+
+    # the port on the docker container that gets mapped to the port on your machine
+    # it goes local-machine-port:docker-port
+    ports: 
+      - 8004:8000
+
+    # here is where you place environment variables 
+    environment: 
+      - NAME=node practice variable
+
+    # to name the container 
+    container_name: node_container
