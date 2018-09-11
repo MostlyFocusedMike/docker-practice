@@ -1,6 +1,15 @@
 # Docker notes 
 This project is all about getting used to docker and docker compose work.
 
+# Use 
+There are 2 containers in the compose file so far, a fake api and a fake front end. I suggest you watch all the videos below to get a 
+good understanding of the basics before playing around. But if you spin up the containers with 
+
+<code>docker-compose up</code>
+
+You can see the json api at port 8004, and the frontend at port 8005 on localhost. 
+
+
 # Videos 
 Here are some of the videos that I wound up (in this order actually) where I finally got everything working the way I'd like 
 
