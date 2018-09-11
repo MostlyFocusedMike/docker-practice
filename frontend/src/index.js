@@ -1,3 +1,4 @@
+// fetch needs to be loaded on the backend 
 const fetch = require('node-fetch')
 
 const express = require('express')
@@ -14,11 +15,12 @@ const template = function(query) {
 }
 
 app.get('/', function(req, res) {
-    const foo = fetch('http://backend:8000')
-    .then(q =>  q.json())
-    .then(q => {
-        res.send(template(q))
-    })
+    fetch('http://backend:8000')
+        .then(q =>  q.json())
+        .then(q => {
+            res.send(template(q))
+        })
+        .catch(console.log)
 })
 
-app.listen(8001)
+app.listen(8000)
