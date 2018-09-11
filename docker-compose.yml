@@ -31,4 +31,26 @@ services:
       - NAME=node practice variable
 
     # to name the container 
-    container_name: node_container
+    container_name: backend_container
+      
+  frontend: 
+    build: ./frontend
+    
+    # remember, this docker environment's working dir is /usr/src/node-practice
+    # nodemon auto restarts the server when changes are detected
+    command: nodemon src/index.js
+
+    # these are the links from your local machine:docker files 
+    # so that you can access them without restarting docker
+    volumes: 
+      # - ./migrations:/usr/src/app/migrations
+      # - ./seeds:/usr/src/app/seeds
+      - ./frontend/src:/usr/src/frontend/src
+      - ./frontend/package.json:/usr/src/frontend/package.json
+
+    # the port on the docker container that gets mapped to the port on your machine
+    # it goes local-machine-port:docker-port
+    ports: 
+      - 8005:8001
+    # to name the container 
+    container_name: frontend_container

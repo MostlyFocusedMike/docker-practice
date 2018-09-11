@@ -11,7 +11,6 @@ const app = express()
 app.get('/', function(req, res) {
     res.json({variable: process.env.NAME});
     console.log("I AM A  LOOOOGGGG")
-    console.log("notice i get fired twice, probably for req then res")
 })
 
 app.listen(8000)
