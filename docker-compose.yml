@@ -1,21 +1,21 @@
 version: "3"
 
-services: 
-  # this is the service name, remember there can be multiple per compose file
-  # do apply commands from outside to this service, do docker-compose exec backend bash 
-  backend: 
-    
-    # build is the location of this service's Dockerfile, relative to the 
-    # docker-compose file 
+services:
+  # "backend" is the service name, remember there can be multiple per compose file
+  # do apply commands from outside to this service, do docker-compose exec backend bash
+  backend:
+
+    # build is the location of this service's Dockerfile, relative to the
+    # docker-compose file
     build: ./node-practice
-    
+
     # remember, this docker environment's working dir is /usr/src/node-practice
     # nodemon auto restarts the server when changes are detected
     command: nodemon src/index.js
 
-    # these are the links from your local machine:docker files 
+    # these are the links from your local machine:docker files
     # so that you can access them without restarting docker
-    volumes: 
+    volumes:
       # - ./migrations:/usr/src/app/migrations
       # - ./seeds:/usr/src/app/seeds
       - ./node-practice/src:/usr/src/node-practice/src
@@ -23,26 +23,29 @@ services:
 
     # the port on the docker container that gets mapped to the port on your machine
     # it goes local-machine-port:docker-port
-    ports: 
+    ports:
       - 8004:8000
 
-    # here is where you place environment variables 
-    environment: 
+    # here is where you place environment variables
+    environment:
       - NAME=node practice variable
 
-    # to name the container 
+    # to name the container
     container_name: backend_container
-      
-  frontend: 
+
+  # here is another service, while backend ran off the node-practice folder
+  # it's perfectly fine to match the frontend folder to the frontend service
+  # there is no file finding ability, call services whatever you want
+  frontend:
     # here is a fake front end that will show you how docker containers URL's work when
-    # talking to each other 
+    # talking to each other
     build: ./frontend
     command: nodemon src/index.js
-    volumes: 
+    volumes:
       - ./frontend/src:/usr/src/frontend/src
       - ./frontend/package.json:/usr/src/frontend/package.json
-    ports: 
-      # notice that this container can use ITS port 8000 without upsetting the other containers
+    ports:
+      # notice that this container can use its port 8000 without upsetting the other containers
       # but your local machine port can't share 8004, so we go up to 8005
       - 8005:8000
     container_name: frontend_container
