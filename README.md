@@ -38,3 +38,23 @@ think of all this as just a simple jumping off point, not a full course
  - after you're done practicing, use
  <code> dc down<code>
  to drop the network so you don't just have it floating around, i'm not sure that's mentioned in any of the videos
+
+ ### notes I need to process
+
+ https://github.com/docker/compose/issues/4223
+
+@creynders The .env file must be placed in the directory where docker-compose is run from (here's the documentation). I've tested this with latest build, it still works. Your post is a bit confusing though because it looks like you are running a build command, which doesn't actually run the container, and hence doesn't use runtime variables like the one defined in your volume block. If you are trying to pass arguments to your docker build process to build an image, you should instead be using the args: key within the build: block in docker-compose.yml, and then you can work with those ARGs in your Dockerfile.
+
+I've noticed there is a bit of confusion surrounding environment variables (I was confused myself for a while). The documentation can be a bit unclear with its language on these terms, especially on of the official examples which confusingly loads the .env file in the the env_file block. This is the best documentation page I've found on various environment variables: https://docs.docker.com/compose/environment-variables/.
+
+Some blurbs to try to clear up any confusion:
+
+env_file
+This file (or files) contains a list of docker environment variables which will be passed to the container as if they were in the environment: block. These files are explicitly defined in the env_file: config block. Anything in these files is passed as if it were via docker run --env-file=FILE.
+
+.env file (https://docs.docker.com/compose/env-file/)
+This file must be placed in the same directory where docker-compose is run from, and is automatically loaded by docker-compose. It contains a list of environment variables which you would like to use as variable substitutions (aka string replacement) within your docker-compose.yml. These vars are not passed to the docker container. For example:
+
+volumes:
+    - "${PROJECT_SRC}/foo.txt:/app/foo.txt"
+where your .env file contains PROJECT_SRC=my/source/directory.

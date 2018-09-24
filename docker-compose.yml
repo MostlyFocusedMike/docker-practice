@@ -29,6 +29,12 @@ services:
     # here is where you place environment variables
     environment:
       - NAME=node practice variable
+      - FOO=Compose overrides dockerfile
+
+    # you can also use an env_file to import variables
+    # lookup the differences between .env and env_file though
+    env_file:
+      - ./.env
 
     # to name the container
     container_name: backend_container
